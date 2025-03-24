@@ -1,3 +1,5 @@
+
+
 import 'package:flutter/material.dart';
 import 'package:to_do/style.dart';
 
@@ -10,7 +12,48 @@ class ToDoPage extends StatefulWidget {
 
 class _ToDoPageState extends State<ToDoPage> {
 
-  List ToDoList = [{"f":"f"}];
+  List ToDoList = [];
+
+  String Item = "";
+
+
+  MyInputOnChange(Content){
+    
+    setState(() {
+      Item = Content;
+      
+    });
+
+
+  }
+
+TextEditingController SubmitButtonValueNull = TextEditingController();
+
+AddItem(){
+
+  setState((){
+    ToDoList.add({"Item": Item});
+
+
+
+    SubmitButtonValueNull.clear(); 
+    
+  });
+
+
+
+}
+
+
+RemoveItem(index){
+  
+  setState((){
+
+    ToDoList.removeAt(index);
+  });
+
+}
+
 
   @override
   Widget build(BuildContext context) {
@@ -33,6 +76,12 @@ class _ToDoPageState extends State<ToDoPage> {
                     child: Padding(
                       padding: const EdgeInsets.only(right: 5),
                       child: TextFormField(
+                        
+                        controller: SubmitButtonValueNull, // When submit buttton then clear data ""
+
+                        onChanged: (Content){
+                          MyInputOnChange(Content);
+                        },
                         decoration: AppInputDecoration("List Item"),
                       ),
                     ),
@@ -41,7 +90,10 @@ class _ToDoPageState extends State<ToDoPage> {
                   Expanded(
                     flex: 30,
                     child: ElevatedButton(
-                      onPressed: (){}, 
+                      
+                      onPressed: (){
+                        AddItem();
+                      }, 
                       child: Text("Add"),
                       style: AppButtonStyle(),
                     ),
@@ -64,16 +116,18 @@ class _ToDoPageState extends State<ToDoPage> {
                         children: [
                            Expanded(
                               flex: 90,
-                              child: Text("Item"),
+                              child: Text(ToDoList[index]["Item"].toString()),
                             ),
 
                             Expanded(
                               flex: 10,
                               child: ElevatedButton(
-                                onPressed: (){}, 
+                                onPressed: (){
+                                  RemoveItem(index);
+                                }, 
                                 child: Icon(Icons.delete),
                                 style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.red,  // Color of the background (use 'primary' instead of 'backgroundColor')
+                                  backgroundColor: Colors.red,  
                                   padding: const EdgeInsets.all(5),
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.all(Radius.circular(4)),
